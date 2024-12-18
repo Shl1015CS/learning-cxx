@@ -42,38 +42,38 @@ int main(int argc, char **argv) {
     C c;
     D d;
 
-    ASSERT(a.virtual_name() == '?', MSG);
-    ASSERT(b.virtual_name() == '?', MSG);
-    ASSERT(c.virtual_name() == '?', MSG);
-    ASSERT(d.virtual_name() == '?', MSG);
-    ASSERT(a.direct_name() == '?', MSG);
-    ASSERT(b.direct_name() == '?', MSG);
-    ASSERT(c.direct_name() == '?', MSG);
-    ASSERT(d.direct_name() == '?', MSG);
+    ASSERT(a.virtual_name() == 'A', MSG); // 调用 A::virtual_name
+    ASSERT(b.virtual_name() == 'B', MSG); // 调用 B::virtual_name
+    ASSERT(c.virtual_name() == 'C', MSG); // 调用 C::virtual_name
+    ASSERT(d.virtual_name() == 'C', MSG); // 调用 C::virtual_name (final)
+    ASSERT(a.direct_name() == 'A', MSG);  // 调用 A::direct_name
+    ASSERT(b.direct_name() == 'B', MSG);  // 调用 B::direct_name
+    ASSERT(c.direct_name() == 'C', MSG);  // 调用 C::direct_name
+    ASSERT(d.direct_name() == 'D', MSG);  // 调用 D::direct_name
 
     A &rab = b;
     B &rbc = c;
     C &rcd = d;
 
-    ASSERT(rab.virtual_name() == '?', MSG);
-    ASSERT(rbc.virtual_name() == '?', MSG);
-    ASSERT(rcd.virtual_name() == '?', MSG);
-    ASSERT(rab.direct_name() == '?', MSG);
-    ASSERT(rbc.direct_name() == '?', MSG);
-    ASSERT(rcd.direct_name() == '?', MSG);
+    ASSERT(rab.virtual_name() == 'B', MSG); // 通过 A 引用调用 B::virtual_name
+    ASSERT(rbc.virtual_name() == 'C', MSG); // 通过 B 引用调用 C::virtual_name
+    ASSERT(rcd.virtual_name() == 'C', MSG); // 通过 C 引用调用 C::virtual_name (final)
+    ASSERT(rab.direct_name() == 'A', MSG);  // 通过 A 引用调用 A::direct_name
+    ASSERT(rbc.direct_name() == 'B', MSG);  // 通过 B 引用调用 B::direct_name
+    ASSERT(rcd.direct_name() == 'C', MSG);  // 通过 C 引用调用 C::direct_name
 
     A &rac = c;
     B &rbd = d;
 
-    ASSERT(rac.virtual_name() == '?', MSG);
-    ASSERT(rbd.virtual_name() == '?', MSG);
-    ASSERT(rac.direct_name() == '?', MSG);
-    ASSERT(rbd.direct_name() == '?', MSG);
+    ASSERT(rac.virtual_name() == 'C', MSG); // 通过 A 引用调用 C::virtual_name
+    ASSERT(rbd.virtual_name() == 'C', MSG); // 通过 B 引用调用 C::virtual_name (final)
+    ASSERT(rac.direct_name() == 'A', MSG);  // 通过 A 引用调用 A::direct_name
+    ASSERT(rbd.direct_name() == 'B', MSG);  // 通过 B 引用调用 B::direct_name
 
     A &rad = d;
 
-    ASSERT(rad.virtual_name() == '?', MSG);
-    ASSERT(rad.direct_name() == '?', MSG);
+    ASSERT(rad.virtual_name() == 'C', MSG); // 通过 A 引用调用 C::virtual_name (final)
+    ASSERT(rad.direct_name() == 'A', MSG);  // 通过 A 引用调用 A::direct_name
 
     return 0;
 }
